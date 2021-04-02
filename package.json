@@ -1,0 +1,25 @@
+{
+  "name": "mongo_node",
+  "version": "1.0.0",
+  "description": "Mongo node test",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/remo1h/mongo_node.git"
+  },
+  "author": "Omer Aletic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/remo1h/mongo_node/issues"
+  },
+  "homepage": "https://github.com/remo1h/mongo_node#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.3"
+  }
+}
