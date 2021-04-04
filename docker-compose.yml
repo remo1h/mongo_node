@@ -9,7 +9,5 @@ services:
       -"/data/db:/data/db"
   mongo_node:
     image: remo1h/mongo_node
-    ports:
-      -"3000:3000"
 
   

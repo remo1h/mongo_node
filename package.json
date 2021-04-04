@@ -1,10 +1,17 @@
 {
   "name": "mongo_node",
   "version": "1.0.0",
-  "description": "Mongo node test",
-  "main": "index.js",
+  "description": "Task related to job offer at Walter Code",
+  "main": "server.js",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {},
   "scripts": {
-    "test": "node index.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -15,11 +22,5 @@
   "bugs": {
     "url": "https://github.com/remo1h/mongo_node/issues"
   },
-  "homepage": "https://github.com/remo1h/mongo_node#readme",
-  "dependencies": {
-    "bcrypt": "^5.0.1",
-    "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.3"
-  }
+  "homepage": "https://github.com/remo1h/mongo_node#readme"
 }
