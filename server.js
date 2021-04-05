@@ -73,8 +73,15 @@ app.get('/welcome', (req,res) => {
     res.render('welcome.ejs')
 })
 
-app.get('/ajax', (req,res) => {
-    res.render('ajax.ejs')
+app.post('/create_list', (req,res) => {
+    res.send(req.body);
+})
+
+app.get('/create_product', (req,res) => {
+    res.render('create_product.ejs')
+})
+app.post('/create_product', (req,res) => {
+    res.send(req.body);
 })
 
 

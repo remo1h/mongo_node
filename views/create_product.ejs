@@ -79,14 +79,18 @@ button {
 <form action="/create_product" method="post">
     <ul>
      <li>
-       <label for="list">Name:</label>
-       <input type="text" id="list" name="list" placeholder="Shopping list" />
+       <label for="product">Name:</label>
+       <input type="text" id="product" name="product" placeholder="Product name" />
      </li>
      <li>
        <label for="quantity">Qunatity:</label>
        <input type="quantity" id="quantity" name="quantity"/>
      </li>
-     <input type="hidden" id="user_id" name="user_id" value="">
+     <li>
+      <label for="price">Price:</label>
+      <input type="price" id="price" name="price"/>
+    </li>
+     <button type="submit">Create</button>
      <li>
          <a href="/welcome">Get back</a>
      </li>

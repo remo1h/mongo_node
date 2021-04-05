@@ -12,6 +12,6 @@ COPY package*.json ./
 
 RUN npm install
 
-CMD [ "node", "/usr/src/mono_node/index.js" ]
+CMD [ "node", "/usr/src/mono_node/server.js" ]
 
 
