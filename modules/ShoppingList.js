@@ -6,7 +6,7 @@ const ShoppingListSchema = new Schema({
        type: String,
        unique: true
    },
-   id:{
+   user_id:{
        type: id,
        required: true,
    },
