@@ -11,8 +11,19 @@
 
 <main>
     <div class="jumbotron">
-        <h1>This is great</h1>
-        <p>Welcome to templating using EJS</p>
+        <h1>List of current shop lists</h1>
+        <p></p>
+        <ul>
+          <% shoppingMap.forEach(function(s) { %>
+            <li>List name: <%= s.name %></li> <a class="btn btn-raised btn-danger" href="/delete?id=<%= s._id %>">Delete</a></td>
+            <% s.product_list.forEach(function(a) { %>
+              <li>Products: <%= a.product_name %></li>  <a class="btn btn-raised btn-primary" href="/update?id=<%= s._id %>">Update</a></td>
+              <li>Total: <%= a.total %></li>          
+        <% }); %>
+        <hr>
+        <% }); %>
+
+      </ul>
     </div>
 </main>
 

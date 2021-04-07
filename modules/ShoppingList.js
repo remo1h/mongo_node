@@ -13,7 +13,7 @@ const ShoppingListSchema = new Schema({
        type: Date,
        required: true
    },
-   product_list:[{ }]
+   product_list:[{}]
 })
 
 const ShoppingList = mongoose.model('shopping', ShoppingListSchema);

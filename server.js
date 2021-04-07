@@ -44,7 +44,7 @@ app.post('/register', async (req, res) => {
            password: hashPass
        })
        user.save().then(item => {
-        res.redirect('/welcome');
+        res.redirect('/login');
       })
       .catch(err => {
           res.json({message : "email already taken"})
@@ -58,13 +58,13 @@ app.get('/login', (req,res) => {
 
 app.post('/login', async (req,res) => {
     const user = await User.findOne({email:req.body.email});
-    const token = jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' });
+    const token = jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
 
     if(user && bcrypt.compareSync(req.body.password, user.password)){
         res
         .status(201)
         .cookie('access_token', 'Bearer ' + token, {
-         expires: new Date(Date.now() + 8 * 3600000) // cookie will be removed after 8 hours
+         expires: new Date(Date.now() + 1 * 3600000) // cookie will be removed after 1 hours
          })
         .cookie('test', 'test')
         .redirect(301, '/welcome')
@@ -75,8 +75,15 @@ app.post('/login', async (req,res) => {
     //res.send("email " + email + "  pass " + pass
 })
 
-app.get('/welcome', authToken, (req,res) => {
-    res.render('welcome.ejs')
+app.get('/welcome', authToken, async (req,res) => {
+    var shoppingMap = [];
+    const list = await ShoppingList.find({});
+
+    list.forEach((shop) => {
+        if(shop.user_id === req.user.user._id)
+         shoppingMap.push(shop);
+    })
+    res.render('welcome.ejs', {shoppingMap})
 })
 
 app.get('/create_list', authToken, (req,res)=>{
@@ -92,12 +99,13 @@ app.post('/create_list', authToken, (req,res) => {
         product_list: [{
             product_name: req.body.product,
             quantity: req.body.quantity,
-            price: req.body.price
+            price: req.body.price,
+            total: parseInt(req.body.quantity)*parseFloat(req.body.price)
         }]
      })
      
     list.save().then(item => {
-         res.send(item)
+         res.redirect('/welcome')
        })
        .catch(err => {
         res.send("List name must be unique")
@@ -117,6 +125,21 @@ app.get('/profile', authToken, (req, res) =>{
 
 app.post('/logut', authToken, (req, res) => {
 
+})
+
+app.get('/delete', authToken, (req, res) => {
+    console.log(req.query.id)
+    ShoppingList.findOneAndRemove({
+        _id: req.query.id
+    }, function(err, shop) {
+
+        if (err) throw err;
+
+        console.log("Success");
+
+    });
+
+    res.redirect('/welcome');
 })
 
 app.post('/change_password', authToken, (req, res) => {
