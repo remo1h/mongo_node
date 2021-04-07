@@ -5,6 +5,7 @@ const app = express();
 const bcrypt = require("bcrypt");
 var mongoose = require("mongoose");
 const User = require('./modules/User');
+const ShoppingList = require('./modules/ShoppingList');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 
@@ -43,11 +44,10 @@ app.post('/register', async (req, res) => {
            password: hashPass
        })
        user.save().then(item => {
-        res.redirect('/login');
+        res.redirect('/welcome');
       })
       .catch(err => {
-        res.send(err);
-        res.redirect('register');
+          res.json({message : "email already taken"})
     });
 })
 
@@ -58,7 +58,7 @@ app.get('/login', (req,res) => {
 
 app.post('/login', async (req,res) => {
     const user = await User.findOne({email:req.body.email});
-    const token = jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET);
+    const token = jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' });
 
     if(user && bcrypt.compareSync(req.body.password, user.password)){
         res
@@ -79,8 +79,29 @@ app.get('/welcome', authToken, (req,res) => {
     res.render('welcome.ejs')
 })
 
+app.get('/create_list', authToken, (req,res)=>{
+    res.render('createlist.ejs')
+})
 app.post('/create_list', authToken, (req,res) => {
-    res.send(req.body);
+    var user = req.user.user
+    
+    var list = new ShoppingList({
+        name: req.body.list,
+        user_id: user._id,
+        date: req.body.date,
+        product_list: [{
+            product_name: req.body.product,
+            quantity: req.body.quantity,
+            price: req.body.price
+        }]
+     })
+     
+    list.save().then(item => {
+         res.send(item)
+       })
+       .catch(err => {
+        res.send("List name must be unique")
+     });
 })
 
 app.get('/create_product',authToken, (req,res) => {
@@ -94,15 +115,22 @@ app.get('/profile', authToken, (req, res) =>{
 
 })
 
+app.post('/logut', authToken, (req, res) => {
+
+})
+
+app.post('/change_password', authToken, (req, res) => {
+    
+})
+
 function authToken(req, res, next){
     const authHeader = req.cookies['access_token'];
     const token = authHeader && authHeader.split(' ')[1];
-    console.log(token);
+
     if(token == null) return res.sendStatus(401);
     
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
         if(err) return res.sendStatus(403);
-
         req.user = user;
         next();
     })

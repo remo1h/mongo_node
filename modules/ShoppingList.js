@@ -7,16 +7,13 @@ const ShoppingListSchema = new Schema({
        unique: true
    },
    user_id:{
-       type: id,
-       required: true,
+       type: String,
    },
    date:{
        type: Date,
        required: true
    },
-   product_list:{
-       type: Product
-   }
+   product_list:[{ }]
 })
 
 const ShoppingList = mongoose.model('shopping', ShoppingListSchema);

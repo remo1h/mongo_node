@@ -4,9 +4,9 @@ services:
     image: mongo
     container_name: mongodb
     ports:
-      -"27017:27017"
+      - "27017:27017"
     volumes:
-      -"/data/db:/data/db"
+      - "/data/db:/data/db"
   mongo_node:
     image: remo1h/mongo_node
 
