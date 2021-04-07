@@ -11,7 +11,8 @@ const jwt = require('jsonwebtoken');
 
 mongoose.connect("mongodb://localhost:27017/shopping_db", {
   useUnifiedTopology: true,
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  useFindAndModify: false 
 });
 
 var db = mongoose.connection;
@@ -116,32 +117,29 @@ app.get('/profile', authToken, (req, res) =>{
 })
 
 app.post('/profile', authToken, async (req, res) =>{
-    var mail = req.user.user.email;
-    var user = await User.findOne({email: mail})
-    var password = req.body.password, 
-        new_password = req.body.new_password,
-        confirm = req.body.confirm;
-    //console.log(user);
+    try {
 
-    if(user != null && bcrypt.compareSync(password, user.password)){
-       if(new_password == confirm){
-        const hashPass =  new_password//await bcrypt.hash(new_password,10);
-        var myquery = { email: mail };
-        var newvalues = {$set: {password: new_password} };
-        db.collection("user").updateOne(myquery, newvalues, function(err, res) {
-          if (err) throw err;
-          console.log("1 document updated");
-        });       
-        res.redirect('welcome');  
-       }
-       else{
-           res.sendStatus(400);
-       }
-    }
+		const _id = req.user.user._id
+
+		const password = await bcrypt.hash(req.body.new_password, 10)
+
+		await User.updateOne(
+			{ _id },
+			{
+				$set: { password }
+			}
+		)
+		res.redirect('/login');
+	} catch (error) {
+		console.log(error)
+		res.json({ status: 'error', error: ';))' })
+	}
 })
 
-app.post('/logut', authToken, (req, res) => {
-
+app.get('/logout', authToken, (req, res) => {
+    res.clearCookie('test');
+    res.clearCookie('access_token',{path:'/',domain:'localhost'});
+    res.redirect('/login');
 })
 
 app.get('/delete', authToken, (req, res) => {

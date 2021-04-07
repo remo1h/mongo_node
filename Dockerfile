@@ -1,17 +1,12 @@
-FROM node:15.12.0
+FROM node:8
 
-LABEL maintainer="Omer Aletic <aletic.omer@nsoft.com>"
-
-RUN apt-get update && apt-get upgrade -y
-
-WORKDIR /usr/src/mono_node
-
-COPY . .
+# Create app directory
+WORKDIR /usr/src/mongo_node
 
 COPY package*.json ./
 
 RUN npm install
+COPY . .
 
-CMD [ "node", "/usr/src/mono_node/server.js" ]
-
-
+EXPOSE 3000
+CMD [ "node", "server.js" ]

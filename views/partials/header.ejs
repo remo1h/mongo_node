@@ -1,3 +1,20 @@
+<script>
+  let logOut = () => {
+
+fetch('logout', {
+  method: 'get',
+  credentials: 'include', // <--- YOU NEED THIS LINE
+  redirect: "follow"
+}).then(res => {
+  console.log(res);
+}).catch(err => {
+  console.log(err);
+});
+
+}
+
+</script>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/welcome">Shopping list creator</a>
     <ul class="navbar-nav mr-auto">
@@ -8,11 +25,11 @@
         <a class="nav-link" href="/report">Create report</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/profile">Profile</a>
+        <a class="nav-link" href="/profile" onclick="logout()">Profile</a>
       </li>
       
       <li class="nav-item">
-        <a class="nav-link" href="/logut">Logout</a>
+        <a class="nav-link" href="/logout">Logout</a>
       </li>
     </ul>
   </nav>
