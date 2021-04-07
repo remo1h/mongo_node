@@ -69,35 +69,23 @@ button {
 <script>
   function addProduct(){
   var forma = document.getElementById('add');
-  var li = document.createElement('li');
-  var li2 = document.createElement('li');
-  var li3 = document.createElement('li');
   var label = document.createElement('label');
-  var label = document.createElement('label');
-  var label2 = document.createElement('label');
-  var label3 = document.createElement('label');
   var input = document.createElement('input');
-  var input2 = document.createElement('input');
-  var input3 = document.createElement('input');
+  var li = document.createElement('li');
+
+  var label1 = document.createElement('label');
+  var input1 = document.createElement('input');
+  var li1 = document.createElement('li');
 
   input.setAttribute('name', 'product');
-  input2.setAttribute('name', 'quantity');
-  input3.setAttribute('name', 'price');
-
   forma.appendChild(li);
   forma.appendChild(label).innerHTML = "Product Name: ";
   forma.appendChild(input);
 
-  forma.appendChild(li2);
-  forma.appendChild(label2).innerHTML = "Quntity: ";
-  forma.appendChild(input2);
-
-  forma.appendChild(li3);
-  forma.appendChild(label3).innerHTML = "Price: ";
-  forma.appendChild(input3);
-
-  forma.appendChild(document.createElement('br'));
-
+  input.setAttribute('name', 'quantity');
+  forma.appendChild(li1);
+  forma.appendChild(label1).innerHTML = "Quantity: ";
+  forma.appendChild(input1);
  
   }
 </script>
@@ -128,13 +116,9 @@ button {
         <input type="text" id="product" name="product" placeholder="Product name" />
       </li>
       <li>
-        <label for="quantity">Qunatity:</label>
-        <input type="quantity" id="quantity" name="quantity"/>
+        <label for="quantity">Quantity:</label>
+        <input type="text" id="quantity" name="quantity" placeholder="0" />
       </li>
-      <li>
-       <label for="price">Price:</label>
-       <input type="price" id="price" name="price"/>
-     </li>
     <li>
       <p onclick="addProduct()">Add product</p>
     </li>

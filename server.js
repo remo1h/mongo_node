@@ -25,7 +25,6 @@ db.once("open", function() {
 
 app.listen(3000);
 
-app.use('/img', express.static('img'))
 app.use(cookieParser());
 
 app.use(express.urlencoded({ extended: false }));
@@ -98,9 +97,7 @@ app.post('/create_list', authToken, (req,res) => {
         date: req.body.date,
         product_list: [{
             product_name: req.body.product,
-            quantity: req.body.quantity,
-            price: req.body.price,
-            total: parseInt(req.body.quantity)*parseFloat(req.body.price)
+            quantity: req.body.quantity
         }]
      })
      
@@ -112,15 +109,35 @@ app.post('/create_list', authToken, (req,res) => {
      });
 })
 
-app.get('/create_product',authToken, (req,res) => {
-    res.render('create_product.ejs')
-})
-app.post('/create_product',authToken, (req,res) => {
-    res.send(req.body);
-})
-
 app.get('/profile', authToken, (req, res) =>{
+    console.log("change pass");
+    var message = req.body.email;
+    res.render('profile.ejs', {message});
+})
 
+app.post('/profile', authToken, async (req, res) =>{
+    var mail = req.user.user.email;
+    var user = await User.findOne({email: mail})
+    var password = req.body.password, 
+        new_password = req.body.new_password,
+        confirm = req.body.confirm;
+    //console.log(user);
+
+    if(user != null && bcrypt.compareSync(password, user.password)){
+       if(new_password == confirm){
+        const hashPass =  new_password//await bcrypt.hash(new_password,10);
+        var myquery = { email: mail };
+        var newvalues = {$set: {password: new_password} };
+        db.collection("user").updateOne(myquery, newvalues, function(err, res) {
+          if (err) throw err;
+          console.log("1 document updated");
+        });       
+        res.redirect('welcome');  
+       }
+       else{
+           res.sendStatus(400);
+       }
+    }
 })
 
 app.post('/logut', authToken, (req, res) => {
@@ -140,10 +157,6 @@ app.get('/delete', authToken, (req, res) => {
     });
 
     res.redirect('/welcome');
-})
-
-app.post('/change_password', authToken, (req, res) => {
-    
 })
 
 function authToken(req, res, next){
