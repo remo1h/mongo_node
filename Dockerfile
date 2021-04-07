@@ -6,6 +6,7 @@ WORKDIR /usr/src/mongo_node
 COPY package*.json ./
 
 RUN npm install
+
 COPY . .
 
 EXPOSE 3000
